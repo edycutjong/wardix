@@ -89,3 +89,20 @@ scripts in `scripts/`. These target the **$200 Bug Discover Bounty** track.
   a verified email via the OTP round-trip — non-obvious from the SDK surface.
 - **Recommendation**: Provide a no-precondition faucet endpoint, or document the
   self-admit → welcome-credits flow prominently in the quickstart.
+
+## 9. No org-provisioning path — payroll lifecycle is unreachable from a dev tenant
+- **Description**: To run a real `compute-payroll` / `execute-disbursement`, the
+  org-data contract first needs an **organisation** entity (`createPolicy` →
+  `setGrants` → `setWriters` → `writeData`). For an authenticated dev tenant,
+  `createPolicy` returns `OrganisationNotFound: organisation does not exist`, and
+  `submitUserInput({ becomeDevTenant: true })` only registers a *tenant*
+  (`tenantAdmit: already-admitted`) — **not** an organisation. The SDK exposes no
+  `createOrganisation`; the docs say orgs are seeded "by the organisation
+  contract", which isn't part of `@terminal3/t3n-sdk`.
+- **Impact**: The full payroll business flow cannot be completed end-to-end from a
+  sandbox dev tenant. The delegation/agent-auth layer (sign, invoke, revoke,
+  verdicts) works fully; everything *downstream* of it is gated on org
+  provisioning that has no public entry point.
+- **Recommendation**: Expose an `createOrganisation` (or testnet self-provision)
+  in the SDK, or document the organisation-contract onboarding alongside the
+  payroll examples so `buildPayrollInvocation` is actually runnable to completion.

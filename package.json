@@ -17,6 +17,7 @@
     "e2e": "npx playwright test",
     "e2e:ui": "npx playwright test --ui",
     "demo:real": "tsx scripts/demo_real.ts",
+    "setup:payroll": "tsx scripts/setup_payroll_org.ts",
     "demo:record": "playwright test --config=playwright.record.config.ts",
     "lighthouse": "npx lhci autorun"
   },
