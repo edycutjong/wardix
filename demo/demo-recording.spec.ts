@@ -8,8 +8,15 @@ const shot = (page: Page, name: string) =>
 
 test("Wardix — full demo walkthrough", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("h1")).toContainText("IAM & Policy Control Plane");
-  await beat(page, 2000);
+  await expect(page.locator("h1")).toContainText("IAM & Policy Control Plane", { timeout: 30000 });
+  await beat(page, 1500);
+
+  // Perform scroll down and scroll up actions
+  await page.mouse.wheel(0, 600);
+  await beat(page, 1500);
+  await page.mouse.wheel(0, -600);
+  await beat(page, 1000);
+
   await shot(page, "01-hero-dashboard");
 
   await page.getByText("Step 1").click();
