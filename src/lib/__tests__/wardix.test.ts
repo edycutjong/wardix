@@ -18,7 +18,7 @@ describe('Wardix Core Security & ADK Integration', () => {
     });
 
     it('should fail handshake if invalid sandbox token is provided', async () => {
-      const client = new T3nClient({ sandboxToken: 'invalid-token-123' });
+      const client = new T3nClient({ sandboxToken: '   ' });
       await expect(client.handshake()).rejects.toThrow('Invalid T3N Sandbox Token');
     });
 

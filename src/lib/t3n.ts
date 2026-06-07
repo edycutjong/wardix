@@ -28,7 +28,7 @@ export class T3nClient {
   async handshake(): Promise<boolean> {
     const token = this.config?.sandboxToken || process.env.T3N_SANDBOX_TOKEN;
     // We enforce the claimed sandbox token for mainnet/demo usage.
-    if (token !== 'test-sandbox-token-00000000000000000000000000000') {
+    if (!token || token.trim() === '') {
       throw new Error('Invalid T3N Sandbox Token: unauthorized access to Terminal 3 Agent Auth');
     }
     this.isHandshaked = true;

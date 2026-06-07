@@ -6,7 +6,7 @@
       "registered": true,
       "status": "online",
       "trustScore": 100,
-      "lastSeen": 1780810250545
+      "lastSeen": 1780811128568
     },
     {
       "did": "did:t3n:data",
@@ -14,7 +14,7 @@
       "registered": true,
       "status": "online",
       "trustScore": 100,
-      "lastSeen": 1780810250545
+      "lastSeen": 1780811128568
     },
     {
       "did": "did:t3n:impostor",
@@ -22,7 +22,7 @@
       "registered": false,
       "status": "offline",
       "trustScore": 0,
-      "lastSeen": 1780810250545
+      "lastSeen": 1780811128568
     }
   ],
   "grants": [
