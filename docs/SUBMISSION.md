@@ -31,7 +31,7 @@ This is built directly for Terminal 3's stated mission — "AI Agent Governance:
 
 **Tracks/category:** $300 Best Agent Auth SDK implementation (primary — Wardix is *literally* an agent-auth tool); bug/doc log → $200; governance framing → Design Partner invite.
 
-**Links:** GitHub: [github.com/edycutjong/dorahacks-t3adk-wardix](https://github.com/edycutjong/dorahacks-t3adk-wardix) · Live: [wardix.vercel.app](https://wardix.edycu.dev) · Video: [youtu.be/wardix-demo-adk](https://youtu.be/wardix-demo-adk) · Tests: **154 (Vitest)** · `scripts/bench.py` p50/p95 included.
+**Links:** GitHub: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix) · Live: [wardix.vercel.app](https://wardix.edycu.dev) · Video: [youtu.be/wardix-demo-adk](https://youtu.be/wardix-demo-adk) · Tests: **154 (Vitest)** · `scripts/bench.py` p50/p95 included.
 
 ---
 *Thank you for taking the time to review Wardix. — Edy*

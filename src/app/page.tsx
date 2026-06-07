@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Shield, 
-  Activity, 
-  AlertTriangle, 
-  CheckCircle, 
-  XCircle, 
-  RefreshCw, 
-  Settings, 
-  Zap, 
-  Lock, 
-  UserCheck, 
-  Trash2, 
-  Play, 
+import {
+  Shield,
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  RefreshCw,
+  Settings,
+  Zap,
+  Lock,
+  UserCheck,
+  Trash2,
+  Play,
   Info,
   Sliders,
   Sparkles
@@ -64,7 +64,7 @@ export default function WardixDashboard() {
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [selectedDecision, setSelectedDecision] = useState<Decision | null>(null);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
-  
+
   // Forms
   const [editFunctions, setEditFunctions] = useState<string[]>([]);
   const [editHosts, setEditHosts] = useState<string[]>([]);
@@ -118,7 +118,7 @@ export default function WardixDashboard() {
     const eventSource = new EventSource('/api/decisions/stream');
     eventSource.onmessage = (event) => {
       const newDecision: Decision = JSON.parse(event.data);
-      
+
       // Update decisions
       setDecisions((prev) => {
         if (prev.some(d => d.id === newDecision.id)) return prev;
@@ -133,7 +133,7 @@ export default function WardixDashboard() {
       const pulseId = Math.random().toString();
       const source = newDecision.agentDid;
       const destination = newDecision.host || 'vendorA';
-      
+
       const newPulse: ActivePulse = {
         id: pulseId,
         from: source,
@@ -289,7 +289,7 @@ export default function WardixDashboard() {
 
   return (
     <div className="min-h-screen bg-[#050508] text-slate-100 font-sans selection:bg-indigo-500 selection:text-white pb-12">
-      
+
       {/* BACKGROUND GLOWS */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-emerald-950/5 rounded-full blur-[150px] pointer-events-none -z-10" />
@@ -309,23 +309,23 @@ export default function WardixDashboard() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button 
+            <button
               onClick={handleReset}
               className="text-xs px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800/80 transition-all flex items-center space-x-1.5 font-mono"
             >
               <Trash2 className="h-3.5 w-3.5" />
               <span>Reset DB</span>
             </button>
-            <a 
-              href="https://github.com/edycutjong/dorahacks-t3adk-wardix/blob/main/docs/BUGS.md" 
+            <a
+              href="https://github.com/edycutjong/wardix/blob/main/docs/BUGS.md"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-indigo-400 hover:text-indigo-300 font-mono flex items-center space-x-1"
             >
               <span>BUGS.md</span>
             </a>
-            <a 
-              href="https://github.com/edycutjong/dorahacks-t3adk-wardix/blob/main/README.md" 
+            <a
+              href="https://github.com/edycutjong/wardix/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-slate-400 hover:text-white font-mono"
@@ -337,7 +337,7 @@ export default function WardixDashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
-        
+
         {/* HERO / PRODUCT BANNER */}
         <section className="relative overflow-hidden rounded-2xl border border-slate-900 bg-slate-950/40 backdrop-blur-sm p-6 sm:p-8">
           <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
@@ -366,7 +366,7 @@ export default function WardixDashboard() {
               <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-white font-mono">{totalDecisions}</div>
               <span className="text-[10px] text-slate-500 font-mono">Total contract actions</span>
             </div>
-            
+
             <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-900/60 shadow-inner">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-slate-400 uppercase tracking-wider font-mono">Violations Blocked</span>
@@ -375,7 +375,7 @@ export default function WardixDashboard() {
               <div className="mt-2 text-2xl sm:text-3xl font-extrabold text-red-500 font-mono">{totalDenials}</div>
               <span className="text-[10px] text-slate-500 font-mono">Native host blocks</span>
             </div>
-            
+
             <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-900/60 shadow-inner">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-slate-400 uppercase tracking-wider font-mono">Agents Online</span>
@@ -399,8 +399,8 @@ export default function WardixDashboard() {
                 Simulate Sam's 3am prompt-injection alert. Click steps to execute scenario transactions.
               </p>
             </div>
-            <button 
-              onClick={() => handleSeed(null)} 
+            <button
+              onClick={() => handleSeed(null)}
               disabled={seedingLoading}
               className="mt-3 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 text-white rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all shadow-md shadow-indigo-600/20"
             >
@@ -410,15 +410,14 @@ export default function WardixDashboard() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-6">
-            
+
             {/* Scenario Step 1 */}
-            <div 
+            <div
               onClick={() => handleSeed(1)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
-                currentScenarioStep === 1 
-                  ? 'bg-emerald-950/20 border-emerald-500/60 shadow-lg shadow-emerald-500/5' 
+              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${currentScenarioStep === 1
+                  ? 'bg-emerald-950/20 border-emerald-500/60 shadow-lg shadow-emerald-500/5'
                   : 'bg-slate-950/60 border-slate-900 hover:border-slate-800'
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -437,13 +436,12 @@ export default function WardixDashboard() {
             </div>
 
             {/* Scenario Step 2 */}
-            <div 
+            <div
               onClick={() => handleSeed(2)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
-                currentScenarioStep === 2 
-                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5' 
+              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${currentScenarioStep === 2
+                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5'
                   : 'bg-slate-950/60 border-slate-900 hover:border-slate-800'
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -462,13 +460,12 @@ export default function WardixDashboard() {
             </div>
 
             {/* Scenario Step 3 */}
-            <div 
+            <div
               onClick={() => handleSeed(3)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
-                currentScenarioStep === 3 
-                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5' 
+              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${currentScenarioStep === 3
+                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5'
                   : 'bg-slate-950/60 border-slate-900 hover:border-slate-800'
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -487,13 +484,12 @@ export default function WardixDashboard() {
             </div>
 
             {/* Scenario Step 4 */}
-            <div 
+            <div
               onClick={() => handleSeed(4)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
-                currentScenarioStep === 4 
-                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5' 
+              className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${currentScenarioStep === 4
+                  ? 'bg-red-950/20 border-red-500/60 shadow-lg shadow-red-500/5'
                   : 'bg-slate-950/60 border-slate-900 hover:border-slate-800'
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -516,10 +512,10 @@ export default function WardixDashboard() {
 
         {/* TWO COLUMN INTERACTIVE VIEW */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* LEFT COLUMN: NODE GRAPH & PREFLIGHT SANDBOX (2 cols wide) */}
           <div className="lg:col-span-2 space-y-8">
-            
+
             {/* INTERACTIVE NODE GRAPH */}
             <section className="bg-slate-950/40 border border-slate-900 rounded-xl p-6 relative flex flex-col">
               <div className="flex items-center justify-between mb-4">
@@ -548,7 +544,7 @@ export default function WardixDashboard() {
               <div className="w-full bg-[#030306] rounded-xl border border-slate-900/80 p-4 h-[380px] flex items-center justify-center relative overflow-hidden">
                 <svg className="w-full h-full" viewBox="0 0 600 440">
                   {/* Graph connections */}
-                  
+
                   {/* Agent connections to T3N Gateway */}
                   <path d="M 100 120 L 300 220" stroke="#1e293b" strokeWidth="2" strokeDasharray="5,5" />
                   <path d="M 100 220 L 300 220" stroke="#1e293b" strokeWidth="2" strokeDasharray="5,5" />
@@ -567,48 +563,48 @@ export default function WardixDashboard() {
                     return (
                       <g key={pulse.id}>
                         {/* Edge from source agent to gateway */}
-                        <line 
-                          x1={fromNode.x} 
-                          y1={fromNode.y} 
-                          x2={nodes.gateway.x} 
-                          y2={nodes.gateway.y} 
-                          stroke={isDeny ? '#ef4444' : '#10b981'} 
-                          strokeWidth="3.5" 
+                        <line
+                          x1={fromNode.x}
+                          y1={fromNode.y}
+                          x2={nodes.gateway.x}
+                          y2={nodes.gateway.y}
+                          stroke={isDeny ? '#ef4444' : '#10b981'}
+                          strokeWidth="3.5"
                           strokeLinecap="round"
                           className="animate-pulse"
                         />
                         {/* Egress target path (if allow, it goes all the way, if deny it stops at gateway) */}
                         {!isDeny && (
-                          <line 
-                            x1={nodes.gateway.x} 
-                            y1={nodes.gateway.y} 
-                            x2={toNode.x} 
-                            y2={toNode.y} 
-                            stroke="#10b981" 
-                            strokeWidth="3.5" 
+                          <line
+                            x1={nodes.gateway.x}
+                            y1={nodes.gateway.y}
+                            x2={toNode.x}
+                            y2={toNode.y}
+                            stroke="#10b981"
+                            strokeWidth="3.5"
                             strokeLinecap="round"
                           />
                         )}
                         {isDeny && (
-                          <line 
-                            x1={nodes.gateway.x} 
-                            y1={nodes.gateway.y} 
-                            x2={(nodes.gateway.x + toNode.x) / 2} 
-                            y2={(nodes.gateway.y + toNode.y) / 2} 
-                            stroke="#ef4444" 
-                            strokeWidth="3.5" 
+                          <line
+                            x1={nodes.gateway.x}
+                            y1={nodes.gateway.y}
+                            x2={(nodes.gateway.x + toNode.x) / 2}
+                            y2={(nodes.gateway.y + toNode.y) / 2}
+                            stroke="#ef4444"
+                            strokeWidth="3.5"
                             strokeDasharray="5,5"
                             strokeLinecap="round"
                             className="animate-pulse"
                           />
                         )}
-                        
+
                         {/* Pulse animation particle */}
                         <circle r="6" fill={isDeny ? '#ef4444' : '#10b981'}>
-                          <animateMotion 
-                            path={`M ${fromNode.x} ${fromNode.y} L ${nodes.gateway.x} ${nodes.gateway.y} ${!isDeny ? `L ${toNode.x} ${toNode.y}` : ''}`} 
-                            dur="0.8s" 
-                            repeatCount="1" 
+                          <animateMotion
+                            path={`M ${fromNode.x} ${fromNode.y} L ${nodes.gateway.x} ${nodes.gateway.y} ${!isDeny ? `L ${toNode.x} ${toNode.y}` : ''}`}
+                            dur="0.8s"
+                            repeatCount="1"
                             fill="freeze"
                           />
                         </circle>
@@ -629,13 +625,13 @@ export default function WardixDashboard() {
                     const agent = agents.find(a => a.did === 'did:t3n:payments');
                     if (agent) setSelectedAgent(agent);
                   }}>
-                    <circle 
-                      cx="100" 
-                      cy="120" 
-                      r="24" 
-                      fill="#050510" 
-                      stroke={agents.find(a => a.did === 'did:t3n:payments')?.status === 'compromised' ? '#ef4444' : '#3b82f6'} 
-                      strokeWidth="2.5" 
+                    <circle
+                      cx="100"
+                      cy="120"
+                      r="24"
+                      fill="#050510"
+                      stroke={agents.find(a => a.did === 'did:t3n:payments')?.status === 'compromised' ? '#ef4444' : '#3b82f6'}
+                      strokeWidth="2.5"
                     />
                     <text x="100" y="124" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">PAY</text>
                     <text x="100" y="156" fill="#94a3b8" fontSize="10" textAnchor="middle">payments-agent</text>
@@ -705,8 +701,8 @@ export default function WardixDashboard() {
               <form onSubmit={handlePreflight} className="grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Acting Agent</label>
-                  <select 
-                    value={preflightAgent} 
+                  <select
+                    value={preflightAgent}
                     onChange={e => setPreflightAgent(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                   >
@@ -718,8 +714,8 @@ export default function WardixDashboard() {
 
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Function</label>
-                  <select 
-                    value={preflightFn} 
+                  <select
+                    value={preflightFn}
                     onChange={e => setPreflightFn(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                   >
@@ -731,8 +727,8 @@ export default function WardixDashboard() {
 
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Target Host</label>
-                  <select 
-                    value={preflightHost} 
+                  <select
+                    value={preflightHost}
                     onChange={e => setPreflightHost(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                   >
@@ -746,16 +742,16 @@ export default function WardixDashboard() {
 
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Amount ($)</label>
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
                     value={preflightAmount}
                     onChange={e => setPreflightAmount(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                   />
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={preflightLoading}
                   className="sm:col-span-5 w-full bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold py-2.5 flex items-center justify-center space-x-1.5 transition-all shadow-md shadow-indigo-600/10"
                 >
@@ -766,13 +762,12 @@ export default function WardixDashboard() {
 
               {/* Preflight results display */}
               {preflightResult && (
-                <div className={`mt-6 p-4 rounded-xl border flex items-start space-x-3.5 ${
-                  preflightResult.verdict === 'allow' 
-                    ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-200' 
+                <div className={`mt-6 p-4 rounded-xl border flex items-start space-x-3.5 ${preflightResult.verdict === 'allow'
+                    ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-200'
                     : 'bg-red-950/20 border-red-500/40 text-red-200'
-                }`}>
+                  }`}>
                   <div className="mt-0.5">
-                    {preflightResult.verdict === 'allow' 
+                    {preflightResult.verdict === 'allow'
                       ? <CheckCircle className="h-5 w-5 text-emerald-400" />
                       : <XCircle className="h-5 w-5 text-red-400" />
                     }
@@ -793,7 +788,7 @@ export default function WardixDashboard() {
 
           {/* RIGHT COLUMN: DECISION STREAM FEED (1 col wide) */}
           <div className="space-y-8">
-            
+
             {/* LIVE DECISION FEED */}
             <section className="bg-slate-950/40 border border-slate-900 rounded-xl p-6 flex flex-col h-[525px]">
               <div className="mb-4 pb-2 border-b border-slate-900 flex justify-between items-center">
@@ -824,32 +819,30 @@ export default function WardixDashboard() {
                     const agentName = dec.agentDid.split(':').pop();
 
                     return (
-                      <div 
+                      <div
                         key={dec.id}
                         onClick={() => setSelectedDecision(dec)}
-                        className={`p-3 rounded-lg border text-left cursor-pointer transition-all ${
-                          selectedDecision?.id === dec.id 
-                            ? 'bg-slate-900 border-indigo-500/80 shadow-md shadow-indigo-500/5' 
+                        className={`p-3 rounded-lg border text-left cursor-pointer transition-all ${selectedDecision?.id === dec.id
+                            ? 'bg-slate-900 border-indigo-500/80 shadow-md shadow-indigo-500/5'
                             : 'bg-slate-950/60 border-slate-900 hover:border-slate-800/80'
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between items-center mb-1.5">
-                          <span className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider font-mono ${
-                            isAllow 
-                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/40' 
+                          <span className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider font-mono ${isAllow
+                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/40'
                               : 'bg-red-950 text-red-400 border border-red-900/40'
-                          }`}>
+                            }`}>
                             {dec.verdict}
                           </span>
                           <span className="text-[10px] text-slate-500 font-mono">
                             {new Date(dec.timestamp).toLocaleTimeString()}
                           </span>
                         </div>
-                        
+
                         <div className="text-xs font-semibold text-white font-mono truncate">
                           {agentName} → {dec.fn}()
                         </div>
-                        
+
                         {dec.host && (
                           <div className="text-[10px] text-slate-400 font-mono mt-0.5 truncate">
                             Target: {dec.host} {dec.amount ? `($${dec.amount})` : ''}
@@ -915,7 +908,7 @@ export default function WardixDashboard() {
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
+
             {/* AGENT LIST (2 cols) */}
             <div className="lg:col-span-2 space-y-4">
               {agents.map(agent => {
@@ -923,25 +916,23 @@ export default function WardixDashboard() {
                 const isSelected = selectedAgent?.did === agent.did;
 
                 return (
-                  <div 
+                  <div
                     key={agent.did}
-                    className={`p-4 rounded-xl border transition-all ${
-                      isSelected 
-                        ? 'bg-slate-900/80 border-indigo-500/80 shadow-md shadow-indigo-500/5' 
+                    className={`p-4 rounded-xl border transition-all ${isSelected
+                        ? 'bg-slate-900/80 border-indigo-500/80 shadow-md shadow-indigo-500/5'
                         : 'bg-slate-950/60 border-slate-900 hover:border-slate-800/80'
-                    }`}
+                      }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      
+
                       {/* Name and identity */}
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="text-sm font-bold text-white">{agent.name}</h3>
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold font-mono ${
-                            agent.registered 
-                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/30' 
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold font-mono ${agent.registered
+                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/30'
                               : 'bg-red-950 text-red-400 border border-red-900/30'
-                          }`}>
+                            }`}>
                             {agent.registered ? 'REGISTERED' : 'UNREGISTERED'}
                           </span>
                         </div>
@@ -952,13 +943,12 @@ export default function WardixDashboard() {
                       <div className="flex items-center space-x-8">
                         <div>
                           <div className="text-[10px] text-slate-500 uppercase tracking-wider font-mono">Status</div>
-                          <span className={`text-xs font-semibold ${
-                            agent.status === 'online' 
-                              ? 'text-emerald-400' 
-                              : agent.status === 'compromised' 
-                                ? 'text-red-400 animate-pulse' 
+                          <span className={`text-xs font-semibold ${agent.status === 'online'
+                              ? 'text-emerald-400'
+                              : agent.status === 'compromised'
+                                ? 'text-red-400 animate-pulse'
                                 : 'text-slate-500'
-                          }`}>
+                            }`}>
                             {agent.status.toUpperCase()}
                           </span>
                         </div>
@@ -967,14 +957,13 @@ export default function WardixDashboard() {
                           <div className="text-[10px] text-slate-500 uppercase tracking-wider font-mono">Trust Score</div>
                           <div className="flex items-center space-x-1.5 mt-0.5">
                             <div className="w-16 h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
-                              <div 
-                                className={`h-full transition-all ${
-                                  agent.trustScore > 70 
-                                    ? 'bg-emerald-500' 
-                                    : agent.trustScore > 40 
-                                      ? 'bg-amber-500' 
+                              <div
+                                className={`h-full transition-all ${agent.trustScore > 70
+                                    ? 'bg-emerald-500'
+                                    : agent.trustScore > 40
+                                      ? 'bg-amber-500'
                                       : 'bg-red-500'
-                                }`}
+                                  }`}
                                 style={{ width: `${agent.trustScore}%` }}
                               />
                             </div>
@@ -1050,7 +1039,7 @@ export default function WardixDashboard() {
                 <Sliders className="h-4 w-4 text-indigo-400" />
                 <span>Scope Configuration</span>
               </h3>
-              
+
               {selectedAgent ? (
                 <div className="space-y-4 text-xs mt-4">
                   <div className="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800">
@@ -1065,7 +1054,7 @@ export default function WardixDashboard() {
                     <div className="space-y-1.5 bg-slate-900/50 p-2.5 rounded-lg border border-slate-900">
                       {['transfer', 'read', 'write'].map(fn => (
                         <label key={fn} className="flex items-center space-x-2 cursor-pointer text-white">
-                          <input 
+                          <input
                             type="checkbox"
                             checked={editFunctions.includes(fn)}
                             onChange={(e) => {
@@ -1089,7 +1078,7 @@ export default function WardixDashboard() {
                     <div className="space-y-1.5 bg-slate-900/50 p-2.5 rounded-lg border border-slate-900">
                       {['api.stripe.com', 'vendorA', 'api.github.com'].map(host => (
                         <label key={host} className="flex items-center space-x-2 cursor-pointer text-white">
-                          <input 
+                          <input
                             type="checkbox"
                             checked={editHosts.includes(host)}
                             onChange={(e) => {

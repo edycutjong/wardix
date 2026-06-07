@@ -4,7 +4,7 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# 🛡️ Wardix — Agent Instructions
+# 🤝 Wardix — Agent Instructions
 
 ## Project
 IAM & Control Plane for Delegated AI Agents. Built natively on Terminal 3's `agent-auth` SDK, Wardix intercepts, evaluates, and logs agent egress traffic to prevent rogue AI actions. It features dynamic scope revocation and visual trust scoring.

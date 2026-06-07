@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/icon.svg" alt="Wardix" width="120" height="120">
 
-  <h1>Wardix 🛡️</h1>
+  <h1>Wardix 🤝</h1>
   <p><em>IAM & Control Plane for Delegated AI Agents</em></p>
   <img src="docs/readme-hero.png" alt="Wardix" width="100%">
 
