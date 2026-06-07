@@ -183,7 +183,8 @@ npm run e2e:ui        # Playwright interactive mode
 npm run lighthouse    # Lighthouse CI audit
 
 # ── Security ────────────────────────────────
-make security-scan    # npm audit + license check
+npm audit                          # dependency vulnerabilities
+npx license-checker --production    # license compliance
 ```
 
 | Layer | Tool | Status |
