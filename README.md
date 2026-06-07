@@ -16,7 +16,7 @@
   ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js)
   ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
   ![Terminal 3](https://img.shields.io/badge/Terminal_3_ADK-3ECF8E?style=flat)
-  [![CI](https://github.com/edycutjong/dorahacks-t3adk-wardix/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/dorahacks-t3adk-wardix/actions/workflows/ci.yml)
+  [![CI](https://github.com/edycutjong/wardix/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/wardix/actions/workflows/ci.yml)
 
 </div>
 
@@ -28,7 +28,7 @@
 
 ## 🎬 Submission Details
 
-- **GitHub Repository**: [github.com/edycutjong/dorahacks-t3adk-wardix](https://github.com/edycutjong/dorahacks-t3adk-wardix)
+- **GitHub Repository**: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix)
 - **Live Console**: [wardix.vercel.app](https://wardix.edycu.dev)
 - **Demo Video**: [youtu.be/wardix-demo-adk](https://youtu.be/wardix-demo-adk)
 - **Sponsor Bounty tracks**:
@@ -96,7 +96,7 @@ We measured the adjudication latency of the Wardix policy engine across **200 se
 ```bash
 # Clone the repository
 git clone https://github.com/edycutjong/wardix.git
-cd dorahacks-t3adk-wardix
+cd wardix
 
 # Install dependencies
 npm install
