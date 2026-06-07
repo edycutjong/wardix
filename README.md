@@ -49,9 +49,9 @@ Terminal 3's enforcement primitive is the **User-to-Agent Delegation Credential*
 **Wardix** is a `did:t3n` control plane built on `@terminal3/t3n-sdk` that makes that primitive operable:
 
 1. **Grant**: Issues a real delegation credential via the TEE custodial signer (`tee:delegation/contracts::sign`) — scoped functions + validity window.
-2. **Invoke / Pre-flight**: Submits a real delegated invocation to the deployed `tee:payroll` contract and surfaces the contract's own verdict.
+2. **Invoke**: Submits a real delegated invocation to the deployed `tee:payroll` contract and surfaces the contract's own verdict.
 3. **Revoke**: `tee:delegation/contracts::revoke` — the agent's next call is denied immediately.
-4. **Observe**: Records every allow/deny with the live node's `request_id` in a console + audit mirror.
+4. **Observe**: Records every allow/deny with the live node's `request_id` in the console verdict feed.
 
 Every verdict below is the real contract's, captured live from testnet:
 
@@ -89,7 +89,7 @@ graph TD
     A["Agent (delegated invocation)"] -->|"executeAndDecode"| D
     D -->|"in-scope / not revoked / not expired"| P["tee:payroll/contracts\n run function"]
     D -->|"function_not_allowed / credential_revoked / Expired"| X["deny"]
-    P --> C["Wardix console + audit mirror"]
+    P --> C["Wardix console (verdict feed)"]
     X --> C
 ```
 
@@ -102,29 +102,10 @@ graph TD
 
 ---
 
-## ⚡ Performance Benchmark
-
-> **Scope note:** This measures the **local pre-flight mirror** (`evaluatePolicy`), which Wardix uses to dry-run a call before it goes on the wire. The **authoritative** verdict is always the `tee:delegation` contract's, returned over the network from the testnet node (see `npm run demo:real`, each verdict carries a real `request_id`).
-
-Local mirror adjudication across **200 sequential calls** (mix of allows/denials):
-
-| Metric | Latency (ms) |
-|---|---|
-| **Mean Latency** | **0.2662 ms** |
-| **Median (p50)** | **0.2309 ms** |
-| **95th Percentile (p95)** | **0.4523 ms** |
-| **99th Percentile (p99)** | **0.5770 ms** |
-| **Max Latency** | **2.1233 ms** |
-
-*The local pre-flight is effectively free, so it can gate every call before the network round-trip to the enclave.*
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js >= 18
-- Python >= 3.8 (for benchmarks)
 
 ### Installation
 ```bash
@@ -158,14 +139,8 @@ curl -s -X POST http://localhost:3000/api/verify \
 # → { "verdict":"deny", "reason":"function_not_allowed…", "requestId":"…" }
 ```
 
-### Running Benchmark
-Execute the performance test tool to calculate statistics:
-```bash
-python scripts/bench.py
-```
-
-### Running Test Suite (152 Tests)
-Run Vitest tests verifying the complete security matrix:
+### Running Test Suite (19 Tests)
+Run the Vitest suite (UI, the live `/api/verify` route, and adapter verdict classification):
 ```bash
 npx vitest run
 ```
@@ -204,7 +179,7 @@ npx license-checker --production    # license compliance
 | Layer | Tool | Status |
 |---|---|---|
 | Code Quality | ESLint + TypeScript | ✅ |
-| Unit Testing | Vitest (152+ tests) | ✅ |
+| Unit Testing | Vitest (19 tests) | ✅ |
 | E2E Testing | Playwright (3 suites) | ✅ |
 | Security (SAST) | CodeQL | ✅ |
 | Security (SCA) | Dependabot + npm audit | ✅ |

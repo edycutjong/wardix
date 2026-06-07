@@ -23,7 +23,7 @@ allow/deny verdict (with the live node's `request_id`) in a console.
 - **Revocation:** `revokeDelegation` → `tee:delegation/contracts::revoke`
 - **Identity:** `did:t3n`, TEE-managed wallet via `tee:user/contracts`
 - **Attestation:** `verifyTdxQuote` / `verifyDkgAttestation`
-- **Console:** Next.js + Tailwind + SSE feed over a local grant/decision mirror
+- **Console:** Next.js + Tailwind; a client-side verdict feed wired to `/api/verify`
 
 ## System Diagram
 ```mermaid
@@ -32,7 +32,7 @@ flowchart LR
       ISSUE[Issue grant → signCustodial]
       INV[Submit invocation]
       REV[Revoke → revokeDelegation]
-      MON[Decision monitor + audit mirror]
+      MON[Verdict feed]
     end
     subgraph T3["Terminal 3 (Intel TDX, native enforcement)"]
       DEL[tee:delegation/contracts<br/>verify credential + agent sig]
@@ -45,18 +45,18 @@ flowchart LR
     INV --> DEL
     PAY --> MON
     DENY --> MON
-    MON --> CON[Live console + trust scores]
+    MON --> CON[Live console]
 ```
 
 ## Core flow
 1. **Grant** — Wardix builds a delegation credential (`functions`, `scopes`,
    validity window) and TEE-custodially signs it with the org's primary wallet.
-2. **Invoke / pre-flight** — the agent assembles a delegated invocation (per-call
+2. **Invoke** — the agent assembles a delegated invocation (per-call
    agent signature) and submits it to `tee:payroll`.
 3. **Enforce (native)** — `tee:delegation` verifies user sig, agent sig,
    function-in-scope, validity window, and revocation inside the TEE; the payroll
    function runs only if all pass.
-4. **Observe** — Wardix records the verdict + `request_id` into its mirror → console.
+4. **Observe** — Wardix renders the verdict + `request_id` in the console feed.
 5. **Revoke** — `revokeDelegation`; the agent's next call returns `credential_revoked`.
 
 ## Data Model
@@ -64,7 +64,7 @@ flowchart LR
 // Real credential (signed): @terminal3/t3n-sdk DelegationCredential
 type Grant = { vcId: Uint8Array; functions: string[]; scopes: string[];
                notAfterSecs: number; credentialJcs: Uint8Array; userSig: Uint8Array }
-// Wardix mirror row (no host read-back — see BUGS.md #1)
+// Console verdict row (session feed; no host read-back — see BUGS.md #1)
 type Decision = { agentDid: string; fn: string; verdict: 'allow'|'deny';
                   reason: string; requestId?: string; ts: number }
 ```
@@ -72,19 +72,16 @@ type Decision = { agentDid: string; fn: string; verdict: 'allow'|'deny';
 ## API
 | Method | Path | Purpose |
 |---|---|---|
-| POST | `/api/verify` | **live**: issue grant + submit delegated invocation, return the real contract verdict (opt-in via `T3N_LIVE=1`) |
-| POST | `/api/grants` | record/update a grant in the console mirror |
-| DELETE | `/api/grants/:agentDid` | revoke (narrow the grant) in the mirror |
-| GET | `/api/decisions/stream` (SSE) | live allow/deny stream |
-| GET | `/api/agents` | topology + trust scores |
-| POST | `/api/preflight` | local pre-flight check against the mirror |
+| POST | `/api/verify` | Issue a real grant + submit a delegated invocation, return the contract verdict + `request_id` (opt-in via `T3N_LIVE=1`; falls back to a clearly-labelled reference outcome when off) |
 
-## Real vs. mirror
-- **Real (live testnet):** `npm run demo:real` and `POST /api/verify` — every verdict
-  is `tee:delegation` / `tee:payroll`'s own, with a node `request_id`.
-- **Mirror (console):** the visual dashboard reads a local cache of issued grants and
-  recorded decisions, because the host exposes no read-back for active credentials.
-  This is a documented limitation, not a simulation of the verdict.
+## How verdicts are produced
+- **Real (live testnet):** `npm run demo:real` and `POST /api/verify` (with `T3N_LIVE=1` +
+  a funded token) — every verdict is `tee:delegation` / `tee:payroll`'s own, with a node
+  `request_id`.
+- **Reference (public console):** when live mode is off, the console renders the *expected*
+  outcome for each scenario, clearly labelled "reference" — never a fabricated `request_id`.
+- There is no host read-back for active credentials (see BUGS.md #1), so the console feed
+  is per-session, not a persisted mirror.
 
 ## Model Selection
 No ML on the verdict path — enforcement is Terminal 3's deterministic, TEE-attested

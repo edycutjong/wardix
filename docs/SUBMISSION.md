@@ -37,7 +37,7 @@ This is built for Terminal 3's stated mission — "AI Agent Governance: hardware
 
 **Tracks/category:** $300 Best Agent Auth SDK implementation (primary — Wardix is *literally* a delegation/agent-auth tool); verified bug/doc log → $200; governance framing → Design Partner invite.
 
-**Links:** GitHub: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix) · Live console: [wardix.edycu.dev](https://wardix.edycu.dev) · Video: *(record + paste real URL)* · Real demo: `npm run demo:real` · Tests: **152 (Vitest)**.
+**Links:** GitHub: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix) · Live console: [wardix.edycu.dev](https://wardix.edycu.dev) · Video: [youtu.be/aYhjJqaob7c](https://youtu.be/aYhjJqaob7c) · Real demo: `npm run demo:real` · Tests: **19 (Vitest)**.
 
 ---
 *Thank you for taking the time to review Wardix. — Edy*
