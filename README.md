@@ -150,7 +150,7 @@ Execute the performance test tool to calculate statistics:
 python scripts/bench.py
 ```
 
-### Running Test Suite (154 Tests)
+### Running Test Suite (152 Tests)
 Run Vitest tests verifying the complete security matrix:
 ```bash
 npx vitest run
@@ -189,7 +189,7 @@ make security-scan    # npm audit + license check
 | Layer | Tool | Status |
 |---|---|---|
 | Code Quality | ESLint + TypeScript | ✅ |
-| Unit Testing | Vitest (154+ tests) | ✅ |
+| Unit Testing | Vitest (152+ tests) | ✅ |
 | E2E Testing | Playwright (3 suites) | ✅ |
 | Security (SAST) | CodeQL | ✅ |
 | Security (SCA) | Dependabot + npm audit | ✅ |
