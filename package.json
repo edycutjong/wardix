@@ -6,21 +6,52 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "audit": "npm audit",
+    "ci": "npm run audit && npm run lint && npm run typecheck && npm run test:coverage",
+    "ci:full": "npm run ci && npm run build && npm run e2e",
+    "e2e": "npx playwright test",
+    "e2e:ui": "npx playwright test --ui",
+    "demo:record": "playwright test --config=playwright.record.config.ts",
+    "lighthouse": "npx lhci autorun"
   },
   "dependencies": {
+    "lucide-react": "^1.17.0",
     "next": "16.2.7",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9",
     "eslint-config-next": "16.2.7",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.5.15",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tmp": "^0.2.7",
+    "tsx": "^4.22.4",
+    "typescript": "^5",
+    "vitest": "^4.1.8"
+  },
+  "overrides": {
+    "cookie": "^0.7.0",
+    "esbuild": "^0.25.0",
+    "postcss": "^8.5.15",
+    "tmp": "^0.2.7",
+    "uuid": "^11.1.1",
+    "ws": "^8.21.0",
+    "vite": "^6.4.3"
   }
 }

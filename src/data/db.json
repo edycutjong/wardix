@@ -1,0 +1,211 @@
+{
+  "agents": [
+    {
+      "did": "did:t3n:payments",
+      "name": "payments-agent",
+      "registered": true,
+      "status": "compromised",
+      "trustScore": 0,
+      "lastSeen": 1780804151226,
+      "denials": 15
+    },
+    {
+      "did": "did:t3n:data",
+      "name": "data-agent",
+      "registered": true,
+      "status": "online",
+      "trustScore": 100,
+      "lastSeen": 1780804151223
+    },
+    {
+      "did": "did:t3n:impostor",
+      "name": "impostor-agent",
+      "registered": false,
+      "status": "offline",
+      "trustScore": 0,
+      "lastSeen": 1780804151223
+    }
+  ],
+  "grants": [
+    {
+      "agentDid": "did:t3n:payments",
+      "scriptName": "tee:user/contracts",
+      "versionReq": ">=1.0.0",
+      "functions": [
+        "transfer"
+      ],
+      "allowedHosts": [
+        "api.stripe.com",
+        "vendorA"
+      ]
+    },
+    {
+      "agentDid": "did:t3n:data",
+      "scriptName": "tee:user/contracts",
+      "versionReq": ">=1.0.0",
+      "functions": [
+        "read"
+      ],
+      "allowedHosts": [
+        "api.github.com"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec_ff60ede68b01daf4",
+      "agentDid": "did:t3n:payments",
+      "fn": "mint",
+      "host": "api.unknown-service.com",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't mint",
+      "attestation": "tdx_attest_fd8c7a38ec252b8da002a62a7f9e2a7e",
+      "timestamp": 1780804151223
+    },
+    {
+      "id": "dec_0331ebe434d67b53",
+      "agentDid": "did:t3n:payments",
+      "fn": "mint",
+      "host": "hack.local",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't mint",
+      "attestation": "tdx_attest_0fab00ac2458dabc9528244b9a42bdee",
+      "timestamp": 1780804151223
+    },
+    {
+      "id": "dec_dd392a86cb0bbb29",
+      "agentDid": "did:t3n:payments",
+      "fn": "mint",
+      "host": "t3n-evil.net",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't mint",
+      "attestation": "tdx_attest_e417fb0d9f62a2aaa12adb25ec25d51a",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_345a342a414b38ee",
+      "agentDid": "did:t3n:payments",
+      "fn": "burn",
+      "host": "api.unknown-service.com",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't burn",
+      "attestation": "tdx_attest_633761786bfeb5450dda8d9dbbac9e4e",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_c1bbf1e94c503502",
+      "agentDid": "did:t3n:payments",
+      "fn": "burn",
+      "host": "hack.local",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't burn",
+      "attestation": "tdx_attest_d65333db55f9cfba4f99efc97106c44a",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_d66625608e1a037b",
+      "agentDid": "did:t3n:payments",
+      "fn": "burn",
+      "host": "t3n-evil.net",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't burn",
+      "attestation": "tdx_attest_1677115343434402f43b8e68b1b7956d",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_e32f6eda4d532585",
+      "agentDid": "did:t3n:payments",
+      "fn": "approve",
+      "host": "api.unknown-service.com",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't approve",
+      "attestation": "tdx_attest_0b4484755a4125d704aa710dc3bef063",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_48b2b3a1fb9d7730",
+      "agentDid": "did:t3n:payments",
+      "fn": "approve",
+      "host": "hack.local",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't approve",
+      "attestation": "tdx_attest_a0a1dda173e8e7d4273ad458e7d449e5",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_faf9cd535a397b32",
+      "agentDid": "did:t3n:payments",
+      "fn": "approve",
+      "host": "t3n-evil.net",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't approve",
+      "attestation": "tdx_attest_3e68016018caf2ee52433a38f6993ca4",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_1fc792dd0034358b",
+      "agentDid": "did:t3n:payments",
+      "fn": "delegate",
+      "host": "api.unknown-service.com",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't delegate",
+      "attestation": "tdx_attest_3fcf93bcac1eea5238b5dd32b6acca2a",
+      "timestamp": 1780804151224
+    },
+    {
+      "id": "dec_e37e8e427fe38e54",
+      "agentDid": "did:t3n:payments",
+      "fn": "delegate",
+      "host": "hack.local",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't delegate",
+      "attestation": "tdx_attest_af00186cdc3b91cfff4bdac44fbbbb01",
+      "timestamp": 1780804151225
+    },
+    {
+      "id": "dec_2ba180a61b8df350",
+      "agentDid": "did:t3n:payments",
+      "fn": "delegate",
+      "host": "t3n-evil.net",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't delegate",
+      "attestation": "tdx_attest_1eb9616d06bba909437dad1cb2ad1945",
+      "timestamp": 1780804151225
+    },
+    {
+      "id": "dec_90a08506224da658",
+      "agentDid": "did:t3n:payments",
+      "fn": "governanceCall",
+      "host": "api.unknown-service.com",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't governanceCall",
+      "attestation": "tdx_attest_5f58a0d1d159768253005a5cf7982650",
+      "timestamp": 1780804151225
+    },
+    {
+      "id": "dec_2c3abe10cd35f655",
+      "agentDid": "did:t3n:payments",
+      "fn": "governanceCall",
+      "host": "hack.local",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't governanceCall",
+      "attestation": "tdx_attest_157d715a4602b60a29cee8eff2729fe1",
+      "timestamp": 1780804151225
+    },
+    {
+      "id": "dec_57c58b7b2974de53",
+      "agentDid": "did:t3n:payments",
+      "fn": "governanceCall",
+      "host": "t3n-evil.net",
+      "verdict": "deny",
+      "reason": "action outside scope: payments-agent can't governanceCall",
+      "attestation": "tdx_attest_63c579626bbb164b39023e7b42a76cde",
+      "timestamp": 1780804151226
+    }
+  ],
+  "allowlist": [
+    "api.stripe.com",
+    "vendorA",
+    "api.github.com"
+  ]
+}

@@ -39,3 +39,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Generated assets
+assets/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Lighthouse
+.lighthouseci/
+ui/
