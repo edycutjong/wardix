@@ -72,7 +72,7 @@ Run it yourself: `npm run demo:real` (needs a funded `T3N_SANDBOX_TOKEN`).
 
 | In-scope call → ✅ allow | Out-of-scope call → ❌ deny | Revoked / expired → ❌ deny |
 |:---:|:---:|:---:|
-| <img src="https://github.com/user-attachments/assets/de21cfc0-be47-4509-b024-40875be8ef0e" width="100%"> | <img src="https://github.com/user-attachments/assets/a284b196-15fb-4db1-a7fe-57e8b34156b2" width="100%"> | <img src="https://github.com/user-attachments/assets/cdbfca62-2b73-4fb0-aa0d-79946b5d2a08" width="100%"> |
+| <img src="docs/screenshots/demo-allow.png" width="100%"> | <img src="docs/screenshots/demo-deny-scope.png" width="100%"> | <img src="docs/screenshots/demo-deny-revoke.png" width="100%"> |
 
 *Every verdict is the `tee:delegation` contract's own decision, returned live from testnet with a real `request_id`.*
 
