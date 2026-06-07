@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  * key configured, this issues a real delegation credential and submits a real
  * delegated invocation to tee:payroll, returning the contract's own verdict.
  *
- * Body: { functions: string[], call: string, ttlSecs?: number, revoke?: boolean }
+ * Body: { functions: string[], call: string, ttlSecs?: number, revoke?: boolean, expired?: boolean }
  */
 export async function POST(request: Request) {
   if (process.env.T3N_LIVE !== '1') {
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { functions, call, ttlSecs, revoke: doRevoke } = await request.json();
+    const { functions, call, ttlSecs, revoke: doRevoke, expired } = await request.json();
     if (!Array.isArray(functions) || typeof call !== 'string') {
       return NextResponse.json({ error: 'Expected { functions: string[], call: string }' }, { status: 400 });
     }
@@ -40,9 +40,12 @@ export async function POST(request: Request) {
       agentPubkey: agentId.pubkey,
       functions,
       scopes: ['payroll/employees'],
-      ttlSecs: ttlSecs ?? 3600,
+      // For the expiry demo: short-lived grant (the TEE won't sign an
+      // already-expired one), then let it lapse before invoking.
+      ttlSecs: expired ? 2 : ttlSecs ?? 3600,
     });
 
+    if (expired) await new Promise((r) => setTimeout(r, 3500));
     if (doRevoke) await t3n.revoke({ org, grant });
 
     const verdict = await t3n.invoke({
