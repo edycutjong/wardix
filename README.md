@@ -8,9 +8,9 @@
   <br/>
 
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://wardix.edycu.dev)
-  [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](#-submission-details)
+  [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](https://youtu.be/aYhjJqaob7c)
   [![Built for DoraHacks](https://img.shields.io/badge/DoraHacks-T3_ADK_Bounty_Challenge-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/t3adkdevchallengebeta)
-
+  [![BUIDL](https://img.shields.io/badge/DoraHacks-BUIDL_%2344424-22c55e?style=for-the-badge)](https://dorahacks.io/buidl/44424)
   <br/>
 
   ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js)
@@ -30,7 +30,7 @@
 
 - **GitHub Repository**: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix)
 - **Live Console**: [wardix.edycu.dev](https://wardix.edycu.dev)
-- **Demo Video**: _record + paste real URL before submitting_
+- **Demo Video**: [https://youtu.be/aYhjJqaob7c](https://youtu.be/aYhjJqaob7c)
 - **Real testnet demo**: `npm run demo:real` — four live verdicts from `tee:delegation` / `tee:payroll`
 - **Sponsor Bounty tracks**:
   1. **Best Agent utilizing Terminal 3 Agent Auth SDK ($300)** (Primary)
