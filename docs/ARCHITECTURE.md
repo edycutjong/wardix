@@ -1,66 +1,97 @@
 # ARCHITECTURE — Wardix
 
-> API verified against `docs.terminal3.io` — see `../ADK_REFERENCE.md`. **Key correction:** T3N enforces agent scope **natively** via the `agent-auth` host interface — an agent that calls a function outside its grant or an unlisted host is blocked at the host layer (`host/http.egress_denied`). Wardix is **not** an external "A2A-bus interceptor" (there is no A2A/MCP/ERC-8004 in T3N). Wardix is the **control plane + observability layer** on top of `agent-auth` and `authorisation`.
+> Built against the **real** `@terminal3/t3n-sdk` (v3.5.0) on the live testnet.
+> Terminal 3's enforcement primitive is the **User-to-Agent Delegation Credential**:
+> a principal signs a scoped, capped, time-boxed grant authorizing an agent to call
+> specific `functions` on a contract; the agent signs each invocation; the deployed
+> contract verifies the chain inside an Intel TDX enclave and runs the action only if
+> every check passes. Wardix is the **control plane + observability layer** on top of
+> `tee:delegation/contracts`.
 
 ## What Wardix actually is
-The platform already does the blocking. Wardix makes it **manageable and visible**: grant/edit/**revoke** delegated scopes, run pre-flight permission checks, and surface every allow/deny with a tamper-evident audit trail.
+Terminal 3 does the blocking. Wardix makes it **manageable and visible**: issue /
+revoke delegated grants, submit pre-flight invocations, and surface every
+allow/deny verdict (with the live node's `request_id`) in a console.
 
 ## Tech Stack
-- **Wardix core:** TypeScript + `T3nClient` (`handshake`, `authenticate(createEthAuthInput)`, `execute`/`executeAndDecode`)
-- **Identity/registry:** `did:t3n` (`did-registry`), agents discoverable via `agent-registry`
-- **Enforcement (native):** `agent-auth` (delegated `functions` + `allowedHosts`), `authorisation` (read-only pre-flight checks)
-- **Audit:** `logging` + `outbox`, anchored by TEE attestation
-- **Console:** Next.js + Tailwind + react-force-graph + SSE feed
-- **Stub agents:** 3 tiny agents — `payments`, `data`, `impostor`
+- **Wardix core:** TypeScript + `@terminal3/t3n-sdk` `T3nClient` (`handshake`,
+  `authenticate(createEthAuthInput)`, `executeAndDecode`)
+- **Grants:** `buildDelegationCredential` + `DelegationCustodialClient.signCustodial`
+  (TEE signs with the principal's primary wallet) → `tee:delegation/contracts::sign`
+- **Invocation:** `buildPayrollInvocation` + agent secp256k1 signature →
+  `tee:payroll/contracts::<fn>`
+- **Revocation:** `revokeDelegation` → `tee:delegation/contracts::revoke`
+- **Identity:** `did:t3n`, TEE-managed wallet via `tee:user/contracts`
+- **Attestation:** `verifyTdxQuote` / `verifyDkgAttestation`
+- **Console:** Next.js + Tailwind + SSE feed over a local grant/decision mirror
 
 ## System Diagram
 ```mermaid
 flowchart LR
-    subgraph Agents
-      PA[payments-agent did:t3n] -->|execute transfer| HOST
-      DA[data-agent did:t3n] -->|execute read| HOST
-      IMP[impostor / injected] -->|execute transfer→bad host| HOST
-    end
-    subgraph T3["T3N host layer (native enforcement)"]
-      HOST[agent-auth check] -->|in scope| RUN[run contract fn]
-      HOST -->|out of scope / host not allowlisted| DENY[host/http.egress_denied]
-    end
     subgraph Wardix["Wardix control plane (did:t3n)"]
-      MGR[Scope manager → agent-auth-update]
-      PRE[authorisation pre-flight]
-      MON[Decision monitor + audit]
+      ISSUE[Issue grant → signCustodial]
+      INV[Submit invocation]
+      REV[Revoke → revokeDelegation]
+      MON[Decision monitor + audit mirror]
     end
-    MGR -. grant/revoke .-> HOST
-    HOST --> MON
+    subgraph T3["Terminal 3 (Intel TDX, native enforcement)"]
+      DEL[tee:delegation/contracts<br/>verify credential + agent sig]
+      PAY[tee:payroll/contracts<br/>run scoped function]
+      DEL -->|valid: in-scope, not revoked, not expired| PAY
+      DEL -->|function_not_allowed / credential_revoked / Expired| DENY[deny]
+    end
+    ISSUE -. sign .-> DEL
+    REV -. revoke .-> DEL
+    INV --> DEL
+    PAY --> MON
     DENY --> MON
     MON --> CON[Live console + trust scores]
 ```
 
 ## Core flow
-1. **Grant** — Wardix sets an agent's scope via `agent-auth-update` (`functions`, `allowedHosts`).
-2. **Pre-flight (optional)** — `authorisation` read-only check before a risky action.
-3. **Enforce (native)** — agent executes; T3N runs it only if in scope, else `host/http.egress_denied`.
-4. **Observe** — Wardix records every allow/deny (`logging`/`outbox` + attestation) → live console + trust score.
-5. **Revoke** — Wardix updates the grant; the agent's next out-of-scope action is denied.
+1. **Grant** — Wardix builds a delegation credential (`functions`, `scopes`,
+   validity window) and TEE-custodially signs it with the org's primary wallet.
+2. **Invoke / pre-flight** — the agent assembles a delegated invocation (per-call
+   agent signature) and submits it to `tee:payroll`.
+3. **Enforce (native)** — `tee:delegation` verifies user sig, agent sig,
+   function-in-scope, validity window, and revocation inside the TEE; the payroll
+   function runs only if all pass.
+4. **Observe** — Wardix records the verdict + `request_id` into its mirror → console.
+5. **Revoke** — `revokeDelegation`; the agent's next call returns `credential_revoked`.
 
 ## Data Model
 ```ts
-type Grant = { agentDid: string; scriptName: string; versionReq: string; functions: string[]; allowedHosts: string[] }
-type Decision = { agentDid: string; fn: string; host?: string; verdict: 'allow'|'deny'; reason: string; attestation: string; ts: number }
-type TrustScore = { agentDid: string; denials: number; lastSeen: number }
+// Real credential (signed): @terminal3/t3n-sdk DelegationCredential
+type Grant = { vcId: Uint8Array; functions: string[]; scopes: string[];
+               notAfterSecs: number; credentialJcs: Uint8Array; userSig: Uint8Array }
+// Wardix mirror row (no host read-back — see BUGS.md #1)
+type Decision = { agentDid: string; fn: string; verdict: 'allow'|'deny';
+                  reason: string; requestId?: string; ts: number }
 ```
 
 ## API
 | Method | Path | Purpose |
 |---|---|---|
-| POST | `/api/grants` | set/update an agent grant (→ `agent-auth-update`) |
-| DELETE | `/api/grants/:agentDid` | revoke (narrow the grant) |
+| POST | `/api/verify` | **live**: issue grant + submit delegated invocation, return the real contract verdict (opt-in via `T3N_LIVE=1`) |
+| POST | `/api/grants` | record/update a grant in the console mirror |
+| DELETE | `/api/grants/:agentDid` | revoke (narrow the grant) in the mirror |
 | GET | `/api/decisions/stream` (SSE) | live allow/deny stream |
 | GET | `/api/agents` | topology + trust scores |
-| POST | `/api/preflight` | `authorisation` check for a proposed action |
+| POST | `/api/preflight` | local pre-flight check against the mirror |
+
+## Real vs. mirror
+- **Real (live testnet):** `npm run demo:real` and `POST /api/verify` — every verdict
+  is `tee:delegation` / `tee:payroll`'s own, with a node `request_id`.
+- **Mirror (console):** the visual dashboard reads a local cache of issued grants and
+  recorded decisions, because the host exposes no read-back for active credentials.
+  This is a documented limitation, not a simulation of the verdict.
 
 ## Model Selection
-No ML on the verdict path — enforcement is T3N's deterministic `agent-auth`, not a model that could be talked around (an LLM judge could itself be prompt-injected). Optional Claude Haiku **off-path** to summarize a denial into a readable alert.
+No ML on the verdict path — enforcement is Terminal 3's deterministic, TEE-attested
+delegation contract, not a model that could be prompt-injected. Optional Claude Haiku
+**off-path** to summarize a denial into a readable alert.
 
-## Host interfaces used (real, ≥3)
-`agent-auth` · `authorisation` · `agent-registry` · `did-registry` · `logging`/`outbox` · `contracts-call` (cross-agent/cross-contract).
+## Host interfaces / contracts used (real)
+`tee:delegation/contracts` (sign + revoke) · `tee:payroll/contracts` (scoped target)
+· `tee:user/contracts` (identity/wallet) · `createEthAuthInput` auth · `verifyTdxQuote`
+attestation.

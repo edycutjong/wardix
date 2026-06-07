@@ -53,6 +53,7 @@ assets/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/recordings/
 
 # Lighthouse
 .lighthouseci/

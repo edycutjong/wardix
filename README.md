@@ -8,7 +8,7 @@
   <br/>
 
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://wardix.edycu.dev)
-  [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](https://youtu.be/wardix-demo-adk)
+  [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](#-submission-details)
   [![Built for DoraHacks](https://img.shields.io/badge/DoraHacks-T3_ADK_Bounty_Challenge-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/t3adkdevchallengebeta)
 
   <br/>
@@ -22,34 +22,47 @@
 
 ---
 
-> **Emotional Hook:** At 3am, Sam — the lone ops engineer at a 12-person fintech — got paged: their invoice-paying AI agent, fed a malicious PDF, had just tried to wire $40k to an attacker's address. It almost went through. Nobody was watching the agents. Wardix is the control plane that blocks rogue agent actions before they clear.
+> **Emotional Hook:** At 3am, Sam — the lone ops engineer at a 12-person fintech — got paged: their payroll-running AI agent, fed a poisoned cycle file, tried to push a disbursement it was never authorized to make. It didn't clear — because the grant behind it was scoped, capped, and revocable. Nobody had been managing those grants. Wardix is the control plane that issues, watches, and revokes them.
 
 ---
 
 ## 🎬 Submission Details
 
 - **GitHub Repository**: [github.com/edycutjong/wardix](https://github.com/edycutjong/wardix)
-- **Live Console**: [wardix.vercel.app](https://wardix.edycu.dev)
-- **Demo Video**: [youtu.be/wardix-demo-adk](https://youtu.be/wardix-demo-adk)
+- **Live Console**: [wardix.edycu.dev](https://wardix.edycu.dev)
+- **Demo Video**: _record + paste real URL before submitting_
+- **Real testnet demo**: `npm run demo:real` — four live verdicts from `tee:delegation` / `tee:payroll`
 - **Sponsor Bounty tracks**:
   1. **Best Agent utilizing Terminal 3 Agent Auth SDK ($300)** (Primary)
-  2. **Bug Discover Bounty ($200)** (Feedback inside [BUGS.md](docs/BUGS.md))
+  2. **Bug Discover Bounty ($200)** (Verified findings in [BUGS.md](docs/BUGS.md))
 
 ---
 
 ## 💡 The Problem
 
-Enterprises are deploying fleets of autonomous AI agents calling tools, moving money, and delegating actions. But traditional IAM (Identity and Access Management) doesn't exist for agentic workflows. A prompt-injected or impersonating agent can execute unauthorized tasks outside its bounds, and nobody notices until the money is gone. 
+Enterprises are handing real authority to AI agents that run jobs and move money. But there's no IAM for agentic workflows. Who did the org delegate, to which agent, for which functions, until when — and how do you revoke a compromised agent *right now* and prove it? A prompt-injected agent shouldn't be able to act outside its grant, and someone needs to manage those grants.
 
 ## 🛡️ The Solution: Wardix
 
-**Wardix** is a `did:t3n`-verified control plane that sits on top of Terminal 3's native `agent-auth` SDK layer. While Terminal 3 blocks out-of-scope egress actions at the secure VM host layer (`host/http.egress_denied`), Wardix makes this enforceable, observable, and manageable:
+Terminal 3's enforcement primitive is the **User-to-Agent Delegation Credential**: a principal signs a scoped, capped, time-boxed grant authorizing a specific agent (by its secp256k1 public key) to call specific `functions` on a contract; the agent signs each invocation; the deployed contract verifies the whole chain **inside an Intel TDX enclave** and runs the action only if every check passes.
 
-1. **Identity Resolution**: Resolves agent identities via `did-registry` and `agent-registry`.
-2. **Dynamic Scope Management**: Updates, narrows, or revokes agent permissions in real time via `agent-auth-update` updates.
-3. **Pre-flight Check**: Dry-runs proposed actions read-only using the `authorisation` host interface.
-4. **Live Alert Console**: Visualizes agent communication networks and trust scores, flashing violations red.
-5. **Attested Audits**: Archives every allow/deny decision along with its TEE attestation signature (`logging` / `outbox`).
+**Wardix** is a `did:t3n` control plane built on `@terminal3/t3n-sdk` that makes that primitive operable:
+
+1. **Grant**: Issues a real delegation credential via the TEE custodial signer (`tee:delegation/contracts::sign`) — scoped functions + validity window.
+2. **Invoke / Pre-flight**: Submits a real delegated invocation to the deployed `tee:payroll` contract and surfaces the contract's own verdict.
+3. **Revoke**: `tee:delegation/contracts::revoke` — the agent's next call is denied immediately.
+4. **Observe**: Records every allow/deny with the live node's `request_id` in a console + audit mirror.
+
+Every verdict below is the real contract's, captured live from testnet:
+
+| Scenario | Verdict | Reason (from `tee:delegation`) |
+|---|---|---|
+| In-scope call, valid grant | ✅ allow | `authorized by tee:delegation` |
+| Function not in the grant | ❌ deny | `function_not_allowed` |
+| After on-chain revoke | ❌ deny | `credential_revoked` |
+| Grant past its window | ❌ deny | `Expired` |
+
+Run it yourself: `npm run demo:real` (needs a funded `T3N_SANDBOX_TOKEN`).
 
 ---
 
@@ -57,22 +70,29 @@ Enterprises are deploying fleets of autonomous AI agents calling tools, moving m
 
 ```mermaid
 graph TD
-    A["Agents (payments/data)"] -->|"(Contract Call)"| B["T3N Host Layer Enforcement\n- agent-auth check\n- http.egress_denied"]
-    B -->|"(Decision stream)"| C["Wardix Security Console\n- Live SSE Feed\n- Attestation logs"]
+    W["Wardix control plane (did:t3n)"] -->|"signCustodial"| D["tee:delegation/contracts\n verify cred + agent sig"]
+    W -->|"revokeDelegation"| D
+    A["Agent (delegated invocation)"] -->|"executeAndDecode"| D
+    D -->|"in-scope / not revoked / not expired"| P["tee:payroll/contracts\n run function"]
+    D -->|"function_not_allowed / credential_revoked / Expired"| X["deny"]
+    P --> C["Wardix console + audit mirror"]
+    X --> C
 ```
 
-### Terminal 3 Host Interfaces Used
-- **`agent-auth`**: Core delegated permissions (`functions` + `allowedHosts`) configured via `agent-auth-update`.
-- **`authorisation`**: Read-only pre-flight capability checks.
-- **`did-registry` / `agent-registry`**: On-chain identities verification.
-- **`logging` / `outbox`**: Attested audit log record.
-- **`contracts-call`**: Inter-agent contract call tracing.
+### Terminal 3 SDK surface used (real)
+- **`tee:delegation/contracts`**: `sign` (issue grant) + `revoke` — the agent-auth core.
+- **`tee:payroll/contracts`**: the scoped delegated target (`compute-payroll`, `execute-disbursement`, …).
+- **`tee:user/contracts`**: `did:t3n` identity + TEE-managed wallet.
+- **Auth**: `handshake` → `authenticate(createEthAuthInput)`; custodial signing via `DelegationCustodialClient`.
+- **Attestation**: `verifyTdxQuote` / `verifyDkgAttestation` (Intel TDX).
 
 ---
 
 ## ⚡ Performance Benchmark
 
-We measured the adjudication latency of the Wardix policy engine across **200 sequential calls** containing a mix of allows and denials:
+> **Scope note:** This measures the **local pre-flight mirror** (`evaluatePolicy`), which Wardix uses to dry-run a call before it goes on the wire. The **authoritative** verdict is always the `tee:delegation` contract's, returned over the network from the testnet node (see `npm run demo:real`, each verdict carries a real `request_id`).
+
+Local mirror adjudication across **200 sequential calls** (mix of allows/denials):
 
 | Metric | Latency (ms) |
 |---|---|
@@ -82,7 +102,7 @@ We measured the adjudication latency of the Wardix policy engine across **200 se
 | **99th Percentile (p99)** | **0.5770 ms** |
 | **Max Latency** | **2.1233 ms** |
 
-*Adjudication overhead is well under the 300ms SLA target, proving inline agent traffic protection is friction-free.*
+*The local pre-flight is effectively free, so it can gate every call before the network round-trip to the enclave.*
 
 ---
 
@@ -107,18 +127,21 @@ Copy the example environment file:
 ```bash
 cp .env.example .env.local
 ```
-Then, update `.env.local` with your claimed `T3N_SANDBOX_TOKEN` (see `docs/BUGS.md` or the Terminal 3 portal for details).
+Then set `T3N_SANDBOX_TOKEN` to a **funded testnet dev tenant private key** (claim one from the Terminal 3 Sandbox portal). This same key acts as the org + agent in the demo. See `.env.example` for `T3N_ENV`, `T3N_LIVE`, and the pinned `T3N_PAYROLL_VERSION`.
 
-### Seeding Scenarios
-Run the deterministic seed script which replays the 4 core scenarios (legitimate allowed transfers, data-agent restricted transfers, unregistered impostor blocks, and injected over-limit transfers):
+### Running the Real Testnet Demo
+Issue a real delegation grant and submit real delegated invocations to the live `tee:payroll` contract — printing four contract-issued verdicts (allow / out-of-scope / revoked / expired), each with a node `request_id`:
 ```bash
-npx tsx scripts/seed.ts
+npm run demo:real
 ```
 
-### Running Verification Tests
-Execute the regression test suite which verifies each security control's response:
+### Live Verification Endpoint (opt-in)
+With `T3N_LIVE=1` and a funded token set, `POST /api/verify` runs the same real flow through the app:
 ```bash
-npx tsx scripts/verify_blocks.ts
+curl -s -X POST http://localhost:3000/api/verify \
+  -H 'Content-Type: application/json' \
+  -d '{"functions":["compute-payroll"],"call":"execute-disbursement"}'
+# → { "verdict":"deny", "reason":"function_not_allowed…", "requestId":"…" }
 ```
 
 ### Running Benchmark

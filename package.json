@@ -16,10 +16,13 @@
     "ci:full": "npm run ci && npm run build && npm run e2e",
     "e2e": "npx playwright test",
     "e2e:ui": "npx playwright test --ui",
+    "demo:real": "tsx scripts/demo_real.ts",
     "demo:record": "playwright test --config=playwright.record.config.ts",
     "lighthouse": "npx lhci autorun"
   },
   "dependencies": {
+    "@noble/curves": "^2.2.0",
+    "@terminal3/t3n-sdk": "^3.5.0",
     "lucide-react": "^1.17.0",
     "next": "16.2.7",
     "react": "19.2.4",
