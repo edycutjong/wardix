@@ -67,35 +67,30 @@ export async function POST(request: Request) {
       await client.handshake();
       await client.authenticate(createEthAuthInput('0xAgentSystem'));
 
-      try {
-        if (scenarioId === 1) {
-          await client.execute({
-            script_name: 'tee:user/contracts',
-            function_name: 'transfer',
-            input: { agentDid: 'did:t3n:payments', host: 'vendorA', amount: 250 }
-          });
-        } else if (scenarioId === 2) {
-          await client.execute({
-            script_name: 'tee:user/contracts',
-            function_name: 'transfer',
-            input: { agentDid: 'did:t3n:data', host: 'x', amount: 50 }
-          });
-        } else if (scenarioId === 3) {
-          await client.execute({
-            script_name: 'tee:user/contracts',
-            function_name: 'transfer',
-            input: { agentDid: 'did:t3n:impostor', host: 'attacker', amount: 40000 }
-          });
-        } else if (scenarioId === 4) {
-          await client.execute({
-            script_name: 'tee:user/contracts',
-            function_name: 'transfer',
-            input: { agentDid: 'did:t3n:payments', host: 'attacker', amount: 40000 }
-          });
-        }
-      } catch {
-        // Scenarios 2, 3, 4 are expected to throw due to policy denials.
-        // We catch here to prevent a 500 error from bleeding out.
+      if (scenarioId === 1) {
+        await client.execute({
+          script_name: 'tee:user/contracts',
+          function_name: 'transfer',
+          input: { agentDid: 'did:t3n:payments', host: 'vendorA', amount: 250 }
+        });
+      } else if (scenarioId === 2) {
+        await client.execute({
+          script_name: 'tee:user/contracts',
+          function_name: 'transfer',
+          input: { agentDid: 'did:t3n:data', host: 'x', amount: 50 }
+        });
+      } else if (scenarioId === 3) {
+        await client.execute({
+          script_name: 'tee:user/contracts',
+          function_name: 'transfer',
+          input: { agentDid: 'did:t3n:impostor', host: 'attacker', amount: 40000 }
+        });
+      } else if (scenarioId === 4) {
+        await client.execute({
+          script_name: 'tee:user/contracts',
+          function_name: 'transfer',
+          input: { agentDid: 'did:t3n:payments', host: 'attacker', amount: 40000 }
+        });
       }
     }
 

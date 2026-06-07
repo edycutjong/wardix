@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/icon.svg" alt="Wardix" width="120" height="120">
 
-  <h1>Wardix 🤝</h1>
+  <h1>Wardix 🔑</h1>
   <p><em>IAM & Control Plane for Delegated AI Agents</em></p>
   <img src="docs/readme-hero.png" alt="Wardix" width="100%">
 
@@ -9,14 +9,14 @@
 
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://wardix.edycu.dev)
   [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](https://youtu.be/wardix-demo-adk)
-  [![Built for Terminal 3](https://img.shields.io/badge/DoraHacks-Terminal_3_ADK-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/terminal3)
+  [![Built for DoraHacks](https://img.shields.io/badge/DoraHacks-T3_ADK_Bounty_Challenge-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/t3adkdevchallengebeta)
 
   <br/>
 
   ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js)
   ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
   ![Terminal 3](https://img.shields.io/badge/Terminal_3_ADK-3ECF8E?style=flat)
-  [![CI](https://github.com/edycutjong/wardix/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/wardix/actions/workflows/ci.yml)
+  [![CI/CD Pipeline](https://github.com/edycutjong/wardix/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/wardix/actions/workflows/ci.yml)
 
 </div>
 

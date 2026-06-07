@@ -5,9 +5,8 @@
       "name": "payments-agent",
       "registered": true,
       "status": "online",
-      "trustScore": 75,
-      "lastSeen": 1780820523950,
-      "denials": 1
+      "trustScore": 100,
+      "lastSeen": 1780821045231
     },
     {
       "did": "did:t3n:data",
@@ -15,7 +14,7 @@
       "registered": true,
       "status": "online",
       "trustScore": 100,
-      "lastSeen": 1780820382973
+      "lastSeen": 1780821045231
     },
     {
       "did": "did:t3n:impostor",
@@ -23,7 +22,7 @@
       "registered": false,
       "status": "offline",
       "trustScore": 0,
-      "lastSeen": 1780820382973
+      "lastSeen": 1780821045231
     }
   ],
   "grants": [
@@ -51,19 +50,7 @@
       ]
     }
   ],
-  "decisions": [
-    {
-      "id": "dec_deaa7809ce20e53c",
-      "agentDid": "did:t3n:payments",
-      "fn": "transfer",
-      "host": "attacker",
-      "amount": 40000,
-      "verdict": "deny",
-      "reason": "host not allowlisted (host/http.egress_denied)",
-      "attestation": "tdx_attest_37512ac8ddd11d2197c4b6e22f99abbe",
-      "timestamp": 1780820523950
-    }
-  ],
+  "decisions": [],
   "allowlist": [
     "api.stripe.com",
     "vendorA",
