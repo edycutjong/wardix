@@ -3,10 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 // Dedicated config for producing the YouTube demo recording + screenshots.
 // Kept separate from playwright.config.ts so `npm run e2e` (the test suite) is untouched.
 // Run with:  npm run demo:record
-// Outputs video to /Users/edycu/Projects/DemoStudio/019_Wardix/recordings
-// and screenshots to .../019_Wardix/screenshots (written by the spec itself).
+// Outputs video to /recordings
 
-const DEMO_OUT = "/Users/edycu/Projects/DemoStudio/019_Wardix/recordings";
+const DEMO_OUT = "recordings";
 
 export default defineConfig({
   testDir: "./demo",
