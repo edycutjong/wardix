@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="board/public/icon.svg" alt="Wardix" width="120" height="120">
+  <img src="public/icon.svg" alt="Wardix" width="120" height="120">
 
   <h1>Wardix 🛡️</h1>
   <p><em>IAM & Control Plane for Delegated AI Agents</em></p>
@@ -7,7 +7,7 @@
 
   <br/>
 
-  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://wardix.vercel.app)
+  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://wardix.edycu.dev)
   [![Pitch Video](https://img.shields.io/badge/🎬_Pitch-Video-ef4444?style=for-the-badge)](https://youtu.be/wardix-demo-adk)
   [![Built for Terminal 3](https://img.shields.io/badge/DoraHacks-Terminal_3_ADK-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/terminal3)
 
@@ -29,7 +29,7 @@
 ## 🎬 Submission Details
 
 - **GitHub Repository**: [github.com/edycutjong/dorahacks-t3adk-wardix](https://github.com/edycutjong/dorahacks-t3adk-wardix)
-- **Live Console**: [wardix.vercel.app](https://wardix.vercel.app)
+- **Live Console**: [wardix.vercel.app](https://wardix.edycu.dev)
 - **Demo Video**: [youtu.be/wardix-demo-adk](https://youtu.be/wardix-demo-adk)
 - **Sponsor Bounty tracks**:
   1. **Best Agent utilizing Terminal 3 Agent Auth SDK ($300)** (Primary)
@@ -95,7 +95,7 @@ We measured the adjudication latency of the Wardix policy engine across **200 se
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/edycutjong/dorahacks-t3adk-wardix.git
+git clone https://github.com/edycutjong/wardix.git
 cd dorahacks-t3adk-wardix
 
 # Install dependencies
@@ -127,7 +127,7 @@ Execute the performance test tool to calculate statistics:
 python scripts/bench.py
 ```
 
-### Running Test Suite (114 Tests)
+### Running Test Suite (154 Tests)
 Run Vitest tests verifying the complete security matrix:
 ```bash
 npx vitest run
@@ -166,7 +166,7 @@ make security-scan    # npm audit + license check
 | Layer | Tool | Status |
 |---|---|---|
 | Code Quality | ESLint + TypeScript | ✅ |
-| Unit Testing | Vitest (114+ tests) | ✅ |
+| Unit Testing | Vitest (154+ tests) | ✅ |
 | E2E Testing | Playwright (3 suites) | ✅ |
 | Security (SAST) | CodeQL | ✅ |
 | Security (SCA) | Dependabot + npm audit | ✅ |

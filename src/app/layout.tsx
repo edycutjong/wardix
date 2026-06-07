@@ -13,16 +13,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wardix.vercel.app"),
+  metadataBase: new URL("https://wardix.edycu.dev"),
   title: "Wardix — IAM & Control Plane for Delegated AI Agents",
   description: "IAM and governance console for Terminal 3 Agent Auth. Grant, monitor, and revoke agent scopes natively with TEE attested audit trails.",
   icons: {
-    icon: "/icon.png",
+    icon: "/icon.svg",
   },
   openGraph: {
     title: "Wardix — IAM & Control Plane for Delegated AI Agents",
     description: "IAM and governance console for Terminal 3 Agent Auth. Grant, monitor, and revoke agent scopes natively with TEE attested audit trails.",
-    url: "https://wardix.vercel.app",
+    url: "https://wardix.edycu.dev",
     siteName: "Wardix",
     images: [
       {

@@ -211,13 +211,12 @@ export default function WardixDashboard() {
 
   // Update grant scope
   const handleUpdateGrant = async () => {
-    if (!selectedAgent) return;
     try {
       const response = await fetch('/api/grants', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          agentDid: selectedAgent.did,
+          agentDid: selectedAgent!.did,
           functions: editFunctions,
           allowedHosts: editHosts
         })
@@ -300,7 +299,7 @@ export default function WardixDashboard() {
       <header className="border-b border-slate-900 bg-slate-950/60 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="h-9 w-9 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <div className="h-9 w-9 bg-linear-to-tr from-indigo-600 to-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
               <Shield className="h-5 w-5 text-white" />
             </div>
             <div>

@@ -1,5 +1,20 @@
+import fs from 'fs';
+import path from 'path';
 import { T3nClient, createEthAuthInput } from '../src/lib/t3n';
 import { resetDb } from '../src/lib/db';
+
+// Load env.local for local execution context
+try {
+  const envPath = path.resolve(__dirname, '../.env.local');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    for (const line of envContent.split('\n')) {
+      if (line.trim().startsWith('T3N_SANDBOX_TOKEN=')) {
+        process.env.T3N_SANDBOX_TOKEN = line.trim().split('=', 2)[1].trim();
+      }
+    }
+  }
+} catch {}
 
 async function verifyBlocks() {
   console.log('🧪 Running Wardix Security Integrity Verification...');

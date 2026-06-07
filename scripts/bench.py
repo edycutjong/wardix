@@ -22,9 +22,21 @@ def main():
     print("🔄 Running 200 security policy adjudications via T3nClient (handshake + auth cached)...")
     
     try:
+        import os
+        env = os.environ.copy()
+        if 'T3N_SANDBOX_TOKEN' not in env:
+            try:
+                with open('.env.local') as f:
+                    for line in f:
+                        if line.strip().startswith('T3N_SANDBOX_TOKEN='):
+                            env['T3N_SANDBOX_TOKEN'] = line.strip().split('=', 1)[1]
+            except Exception:
+                pass
+
         # Run the helper script and capture stdout
         result = subprocess.run(
             ['npx', 'tsx', 'scripts/bench_helper.ts'],
+            env=env,
             capture_output=True,
             text=True,
             check=True

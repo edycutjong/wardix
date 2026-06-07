@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "html" : "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3002",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -17,8 +17,8 @@ export default defineConfig({
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: "npm run start",
-    url: "http://localhost:3000",
+    command: "npm run start -- -p 3002",
+    url: "http://localhost:3002",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
   },

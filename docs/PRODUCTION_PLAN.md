@@ -1,7 +1,7 @@
 # PRODUCTION PLAN — Wardix (proof-of-production)
 
 ## Live URL
-- **Console + demo:** Vercel — [wardix.vercel.app](https://wardix.vercel.app)
+- **Console + demo:** Vercel — [wardix.vercel.app](https://wardix.edycu.dev)
 - **Wardix service:** Railway / Vercel Serverless — holds the persistent `T3nClient` session + drives `agent-auth-update`.
 
 ## On-chain / registry proof
@@ -15,7 +15,7 @@
 - The control-plane functions are exposed via standard JSON API endpoints and a simulated client wrapper in `src/lib/t3n.ts`.
 
 ## Tests
-- **114 tests (Vitest)**, run via `npx vitest run`.
+- **154 tests (Vitest)**, run via `npx vitest run`.
 - Coverage: verdict truth table (identity / scope / limit / allowlist denials), delegation-chain resolution, attestation presence on every log entry, a test that **fails** if any out-of-scope action is ever allowed.
 
 ## Benchmark

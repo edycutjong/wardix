@@ -14,7 +14,7 @@ The "$40k injection → DENIED on the live graph" moment must work by hour 24. B
 
 ### Day 2 (24–48h) — Depth, proof, polish
 - **24–29h** `IncidentReplay` stepper, trust scores, scope editor, delegation-chain view.
-- **29–34h** Harden: malformed messages, expired session, revoked agent. **114 Vitest tests** (verdict truth table per control), count in README.
+- **29–34h** Harden: malformed messages, expired session, revoked agent. **154 Vitest tests** (verdict truth table per control), count in README.
 - **34–38h** `scripts/bench.py` (p50/p95 over 200 adjudications). `scripts/check_submission_readiness.py`. `DEMO.md`.
 - **38–42h** Deploy console (Vercel) + wardix service (Fly/Railway). Live URL. Landing page.
 - **42–46h** Record demo. Finalize SUBMISSION/SPONSOR_DEFENSE/README.
